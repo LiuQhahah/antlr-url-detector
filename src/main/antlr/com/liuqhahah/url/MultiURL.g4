@@ -8,7 +8,8 @@ url: uri EOF;
 
 uri: scheme? login? host (':' port)? ('/' path?)? query? frag? WS?;
 
-scheme: 'ftp://' | 'http://' | 'https://';
+scheme: NON_SPACE+ '://';
+NON_SPACE: ~[ \t\n\r]+;
 
 host: '/'? hostname;
 
@@ -45,3 +46,6 @@ STRING: ([a-zA-Z~0-9] | HEX) ([a-zA-Z0-9.+-] | HEX)*;
 WS: [\r\n]+;
 
 SEPARATOR: [ \t\n\r]+;
+
+ALPHA: [a-zA-Z]+;
+
