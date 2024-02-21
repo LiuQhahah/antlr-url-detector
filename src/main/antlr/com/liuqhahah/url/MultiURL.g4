@@ -5,7 +5,7 @@ urls: uri (SEPARATOR uri)* EOF;
 uri: scheme?  login? host (':' port)? ('/' path?)? query? frag? WS?;
 
 scheme
-    : string + '://'
+    : string  '://'
     ;
 
 

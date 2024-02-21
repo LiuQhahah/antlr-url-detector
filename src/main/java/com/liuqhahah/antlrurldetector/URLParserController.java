@@ -60,13 +60,19 @@ public class URLParserController {
                     System.out.println("s: " + uriContext.toString());
                     // You can now traverse the parse tree or extract information from the context
                     if(uriContext.scheme()!=null){
-                        System.out.println("Scheme: " +uriContext.scheme().getText());
+                        System.out.println("Scheme: " +listener.getScheme());
                     }
                     if (uriContext.host()!=null){
                         System.out.println("Host: " + uriContext.host().getText());
                     }
 
-                    results.add(uriContext.getText());
+
+                    System.out.println("Path: " + listener.getPath());
+                    System.out.println("Query: " + listener.getQuery());
+                    System.out.println("Fragment: " + listener.getFrag());
+
+
+                    results.add(listener.getScheme()+listener.getHost()+listener.getPath());
                 }
             }
         }

@@ -7,53 +7,82 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.Locale;
+import java.util.Set;
+
 public class UrlParsingListener extends MultiURLBaseListener {
     private String scheme;
+    private String login;
     private String host;
     private String path;
+
     private String query;
+    private String frag;
 
-    private String url;
-    private String uri;
-    private String statement;
-    private String statements;
-
-    public String getStatement() {
-        return statement;
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
     }
 
-    public String getStatements() {
-        return statements;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
+    public void setHost(String host) {
+        this.host = host;
+    }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public void setFrag(String frag) {
+        this.frag = frag;
+    }
+
+    public String getScheme() {
+        return scheme;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public String getFrag() {
+        return frag;
+    }
 
 
 
     @Override
     public void enterUri(MultiURLParser.UriContext ctx) {
-        System.out.println("enterUri start:"+ctx.start.getStartIndex());
+        System.out.println("enterUri start:" + ctx.start.getStartIndex());
 
-        uri = ctx.getText();
     }
 
-    @Override
-    public void enterScheme(MultiURLParser.SchemeContext ctx) {
-        System.out.println("enterScheme start:"+ctx.start.getStartIndex());
 
-        scheme = ctx.getText();
-    }
 
-    @Override
-    public void enterHost(MultiURLParser.HostContext ctx) {
-       host = ctx.getText();
-    }
+
 
     @Override
     public void enterQuery(MultiURLParser.QueryContext ctx) {
-       query = ctx.getText();
+        query = ctx.getText();
     }
-
 
 
     @Override
@@ -63,12 +92,31 @@ public class UrlParsingListener extends MultiURLBaseListener {
 
     @Override
     public void exitScheme(MultiURLParser.SchemeContext ctx) {
-        super.exitScheme(ctx);
+
+        System.out.println("exitScheme start:" + ctx.start.getStartIndex() + ",text:" + ctx.getText());
+        scheme = ctx.getText();
+        if (scheme.contains("https://")) {
+            scheme = "https://";
+        } else if (scheme.contains("http://")) {
+            scheme = "http://";
+        } else if (scheme.contains("ftp://")) {
+            scheme = "ftp://";
+        } else if (scheme.contains("ftps://")) {
+            scheme = "ftps://";
+        } else if (scheme.contains("https%3a//")) {
+            scheme = "https://";
+        } else if (scheme.contains("http%3a//")) {
+            scheme = "http://";
+        } else if (scheme.contains("ftp%3a//")) {
+            scheme = "ftp://";
+        }
+        setScheme(scheme);
     }
 
     @Override
     public void exitHost(MultiURLParser.HostContext ctx) {
-        super.exitHost(ctx);
+        host = ctx.getText();
+        setHost(host);
     }
 
     @Override
@@ -103,7 +151,7 @@ public class UrlParsingListener extends MultiURLBaseListener {
 
     @Override
     public void enterPath(MultiURLParser.PathContext ctx) {
-        super.enterPath(ctx);
+        path = ctx.getText();
     }
 
     @Override
@@ -207,28 +255,4 @@ public class UrlParsingListener extends MultiURLBaseListener {
     }
 
 
-
-    public String getScheme() {
-        return scheme;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public String getQuery() {
-        return query;
-    }
-
-    public String getUrl(){
-        return url;
-    }
-
-    public String getUri(){
-        return uri;
-    }
 }
