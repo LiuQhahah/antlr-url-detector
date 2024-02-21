@@ -1,15 +1,13 @@
 grammar MultiURL;
 
-start: urls EOF;
+urls: uri (SEPARATOR uri)* EOF;
 
-urls: url (SEPARATOR url)*;
+uri: scheme?  login? host (':' port)? ('/' path?)? query? frag? WS?;
 
-url: uri EOF;
+scheme
+    : string + '://'
+    ;
 
-uri: scheme? login? host (':' port)? ('/' path?)? query? frag? WS?;
-
-scheme: NON_SPACE+ '://';
-NON_SPACE: ~[ \t\n\r]+;
 
 host: '/'? hostname;
 

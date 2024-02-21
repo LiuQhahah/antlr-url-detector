@@ -13,6 +13,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class URLParserController {
@@ -52,20 +53,20 @@ public class URLParserController {
             // Start parsing
 
             // Replace "url" with the name of your starting rule
-            MultiURLParser.UrlsContext urlContext = parser.urls();
+            MultiURLParser.UrlsContext urlsContext = parser.urls();
 
-            if (urlContext.url()!=null){
-                for (MultiURLParser.UrlContext urlsContext :urlContext.url()){
-
-                    System.out.println("uri: " + listener.getUri());
+            if (urlsContext.uri()!=null){
+                for (MultiURLParser.UriContext uriContext :urlsContext.uri()){
+                    System.out.println("s: " + uriContext.toString());
                     // You can now traverse the parse tree or extract information from the context
-                    if(urlsContext.uri().scheme()!=null){
-                        System.out.println("Scheme: " + urlsContext.uri().scheme().getText());
+                    if(uriContext.scheme()!=null){
+                        System.out.println("Scheme: " +uriContext.scheme().getText());
                     }
-                    if (urlsContext.uri().host()!=null){
-                        System.out.println("Host: " + urlsContext.uri().host().getText());
+                    if (uriContext.host()!=null){
+                        System.out.println("Host: " + uriContext.host().getText());
                     }
-                    results.add(urlsContext.uri().getText());
+
+                    results.add(uriContext.getText());
                 }
             }
         }
